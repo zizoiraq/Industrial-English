@@ -2,7 +2,7 @@
 <html lang="ar">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>تدرب على الإنجليزية في بيئة العمل - مصفى نفطي</title>
     <style>
         * {
@@ -15,71 +15,127 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #0a0f1e;
             color: #e0e0e0;
-            line-height: 1.6;
+            line-height: 1.5;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            transition: background 0.3s, color 0.3s;
         }
 
-        /* الهيدر بتصميم جديد */
+        /* الوضع الفاتح */
+        body.light-mode {
+            background: #f0f4f8;
+            color: #1e293b;
+        }
+
+        body.light-mode .header {
+            background: linear-gradient(135deg, #ffffff 0%, #e6eef9 100%);
+            color: #1e293b;
+        }
+
+        body.light-mode #game-container {
+            background: #ffffff;
+            border: 1px solid #d0d9e8;
+        }
+
+        body.light-mode .stats-bar {
+            background: #e6eef9;
+            border: 1px solid #cbd5e1;
+        }
+
+        body.light-mode #score, 
+        body.light-mode #question-counter {
+            background: #ffffff;
+            color: #f39c12;
+        }
+
+        body.light-mode #question {
+            background: #d4e0f0;
+            color: #0a1a2a;
+            border-right: 5px solid #f39c12;
+        }
+
+        body.light-mode .option {
+            background: #f8fafc;
+            color: #1e293b;
+            border: 2px solid #cbd5e1;
+        }
+
+        body.light-mode #explanation {
+            background: #e6eef9;
+            color: #1e293b;
+        }
+
+        /* زر تبديل الوضع */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #1e293b;
+            color: #f39c12;
+            border: 2px solid #f39c12;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 999;
+            font-size: 1.5em;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: 0.3s;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            background: #f39c12;
+            color: #1e293b;
+        }
+
+        body.light-mode .theme-toggle {
+            background: #f39c12;
+            color: #ffffff;
+        }
+
+        /* الهيدر */
         .header {
             background: linear-gradient(135deg, #0b1120 0%, #1a2639 100%);
             color: white;
-            padding: 25px 20px;
+            padding: 15px 15px 10px 15px;
             text-align: center;
             border-bottom: 3px solid #f39c12;
             box-shadow: 0 4px 20px rgba(0,0,0,0.5);
         }
 
         .header h1 {
-            font-size: 2.2em;
-            margin-bottom: 10px;
+            font-size: 1.8em;
+            margin-bottom: 5px;
             color: #f39c12;
-            text-shadow: 0 2px 5px rgba(243, 156, 18, 0.3);
         }
 
         .header .subtitle {
             color: #b8c7de;
-            font-size: 1.1em;
-            margin-bottom: 15px;
-            letter-spacing: 1px;
+            font-size: 0.95em;
+            margin-bottom: 8px;
         }
 
         .header .names {
             background: rgba(243, 156, 18, 0.15);
-            padding: 12px 20px;
+            padding: 8px 15px;
             border-radius: 50px;
             display: inline-block;
-            margin: 10px 0;
+            margin: 5px 0;
             border: 1px solid #f39c12;
-            backdrop-filter: blur(5px);
-        }
-
-        .header .names span {
-            color: #f39c12;
-            font-weight: bold;
-            font-size: 1.2em;
-        }
-
-        .header .names .name {
-            color: #ecf0f1;
-            margin: 0 5px;
+            font-size: 0.9em;
         }
 
         .header .designer {
-            margin-top: 15px;
+            margin-top: 8px;
             color: #95a5a6;
-            font-size: 0.95em;
+            font-size: 0.8em;
             border-top: 1px dashed #34495e;
-            padding-top: 15px;
-            width: 80%;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .header .designer strong {
-            color: #f39c12;
-            font-size: 1.1em;
+            padding-top: 8px;
         }
 
         /* الحاوية الرئيسية */
@@ -87,20 +143,19 @@
             flex: 1;
             display: flex;
             justify-content: center;
-            align-items: center;
-            padding: 30px 20px;
+            align-items: flex-start;
+            padding: 10px 10px;
         }
 
         #game-container {
             background: #141c2c;
             margin: 0 auto;
-            padding: 35px 30px;
-            border-radius: 25px;
+            padding: 15px 15px;
+            border-radius: 20px;
             width: 100%;
             max-width: 800px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
             border: 1px solid #2a3a4f;
-            transition: all 0.3s ease;
         }
 
         /* شريط التقدم والإحصائيات */
@@ -109,36 +164,36 @@
             justify-content: space-between;
             align-items: center;
             background: #0f172a;
-            padding: 15px 20px;
-            border-radius: 15px;
-            margin-bottom: 25px;
+            padding: 8px 12px;
+            border-radius: 12px;
+            margin-bottom: 12px;
             border: 1px solid #2a3f5a;
         }
 
         #score {
-            font-size: 1.3em;
+            font-size: 1em;
             font-weight: bold;
             color: #f39c12;
             background: #1e293b;
-            padding: 8px 20px;
+            padding: 5px 12px;
             border-radius: 50px;
             border: 1px solid #f39c12;
         }
 
         #question-counter {
-            font-size: 1.2em;
+            font-size: 0.95em;
             color: #b8c7de;
             background: #1e293b;
-            padding: 8px 20px;
+            padding: 5px 12px;
             border-radius: 50px;
             border: 1px solid #3a4e62;
         }
 
         #progress-bar {
-            height: 8px;
+            height: 6px;
             background: #1e293b;
             border-radius: 10px;
-            margin-bottom: 25px;
+            margin-bottom: 15px;
             overflow: hidden;
         }
 
@@ -150,58 +205,57 @@
             border-radius: 10px;
         }
 
-        /* صندوق السؤال */
+        /* صندوق السؤال - بألوان مميزة ومريحة */
         #question {
-            font-size: 2em;
-            margin-bottom: 35px;
-            min-height: 100px;
+            font-size: 1.7em;
+            margin-bottom: 15px;
+            min-height: 80px;
             direction: rtl;
             text-align: center;
-            background: #1a2639;
-            padding: 30px 25px;
+            background: #1e3a5f;
+            padding: 20px 15px;
             border-radius: 20px;
             border-right: 5px solid #f39c12;
             font-weight: bold;
-            line-height: 1.6;
-            color: #ecf0f1;
-            box-shadow: inset 0 2px 10px rgba(0,0,0,0.3);
+            line-height: 1.4;
+            color: #ffffff;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
             border-left: 1px solid #2a3f5a;
             border-top: 1px solid #2a3f5a;
             border-bottom: 1px solid #2a3f5a;
-            word-spacing: 2px;
         }
 
         /* شبكة الخيارات */
         .options-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin: 30px 0;
+            gap: 10px;
+            margin: 15px 0;
         }
 
         @media (max-width: 600px) {
             .options-grid {
                 grid-template-columns: 1fr;
+                gap: 8px;
             }
         }
 
         .option {
             background: #1e2a3a;
-            padding: 18px 15px;
-            border-radius: 15px;
+            padding: 12px 12px;
+            border-radius: 12px;
             cursor: pointer;
             color: #e0e0e0;
             border: 2px solid #2a3f5a;
-            font-size: 1.1em;
+            font-size: 1em;
             direction: ltr;
             text-align: left;
             transition: all 0.2s;
-            font-weight: 500;
-            min-height: 85px;
+            min-height: 70px;
             display: flex;
             align-items: center;
             word-break: break-word;
-            line-height: 1.5;
+            line-height: 1.4;
         }
 
         .option:hover:not(:disabled) {
@@ -216,6 +270,7 @@
             cursor: not-allowed;
         }
 
+        /* ====== تلوين الإجابات الصحيحة والخاطئة ====== */
         .option.correct { 
             background: #27ae60 !important; 
             border-color: #2ecc71 !important;
@@ -229,52 +284,6 @@
             box-shadow: 0 0 20px rgba(231, 76, 60, 0.3);
         }
 
-        .option-letter {
-            display: inline-block;
-            background: #0f172a;
-            color: #f39c12;
-            font-weight: bold;
-            width: 30px;
-            height: 30px;
-            line-height: 30px;
-            text-align: center;
-            border-radius: 50%;
-            margin-right: 12px;
-            font-size: 1em;
-            border: 1px solid #f39c12;
-        }
-/* تلوين الإجابات */
-.option.correct { 
-    background: #27ae60 !important; 
-    border-color: #2ecc71 !important;
-    box-shadow: 0 0 20px rgba(46, 204, 113, 0.5);
-    color: white;
-}
-
-.option.wrong { 
-    background: #c0392b !important; 
-    border-color: #e74c3c !important;
-    box-shadow: 0 0 20px rgba(231, 76, 60, 0.3);
-}
-
-.option.correct .option-letter,
-.option.wrong .option-letter {
-    background: rgba(255,255,255,0.2);
-    color: white;
-    border-color: white;
-}
-
-/* للوضع الفاتح */
-body.light-mode .option.correct {
-    background: #27ae60 !important;
-    color: white;
-}
-
-body.light-mode .option.wrong {
-    background: #c0392b !important;
-    color: white;
-}
-
         .option.correct .option-letter,
         .option.wrong .option-letter {
             background: rgba(255,255,255,0.2);
@@ -282,33 +291,57 @@ body.light-mode .option.wrong {
             border-color: white;
         }
 
+        body.light-mode .option.correct {
+            background: #27ae60 !important;
+            color: white;
+        }
+
+        body.light-mode .option.wrong {
+            background: #c0392b !important;
+            color: white;
+        }
+        /* ====== نهاية تلوين الإجابات ====== */
+
+        .option-letter {
+            display: inline-block;
+            background: #0f172a;
+            color: #f39c12;
+            font-weight: bold;
+            width: 26px;
+            height: 26px;
+            line-height: 26px;
+            text-align: center;
+            border-radius: 50%;
+            margin-right: 10px;
+            font-size: 0.9em;
+            border: 1px solid #f39c12;
+            flex-shrink: 0;
+        }
+
         /* صندوق الشرح */
         #explanation {
-            margin-top: 25px;
-            padding: 20px 25px;
-            font-size: 1.2em;
-            min-height: 80px;
+            margin-top: 15px;
+            padding: 15px 15px;
+            font-size: 1em;
+            min-height: 60px;
             direction: rtl;
             text-align: center;
             background: #0f1825;
-            border-radius: 15px;
+            border-radius: 12px;
             border-right: 5px solid #3498db;
-            line-height: 1.8;
+            line-height: 1.5;
             color: #ecf0f1;
-            border-left: 1px solid #2a3f5a;
-            border-top: 1px solid #2a3f5a;
-            border-bottom: 1px solid #2a3f5a;
         }
 
         /* زر السؤال التالي */
         .next-btn-container {
             text-align: center;
-            margin-top: 30px;
+            margin-top: 15px;
         }
 
         #next-btn {
-            padding: 15px 50px;
-            font-size: 1.4em;
+            padding: 12px 30px;
+            font-size: 1.2em;
             border: none;
             border-radius: 50px;
             cursor: pointer;
@@ -317,10 +350,9 @@ body.light-mode .option.wrong {
             transition: all 0.3s;
             display: none;
             font-weight: bold;
-            width: auto;
-            min-width: 250px;
-            border: 1px solid #f39c12;
-            box-shadow: 0 5px 15px rgba(243, 156, 18, 0.3);
+            width: 100%;
+            max-width: 300px;
+            margin: 0 auto;
         }
 
         #next-btn:hover { 
@@ -332,7 +364,7 @@ body.light-mode .option.wrong {
         /* رسالة النهاية */
         .completion-box {
             text-align: center;
-            padding: 50px 30px;
+            padding: 30px 20px;
             background: #1a2639;
             border-radius: 20px;
             border: 2px solid #f39c12;
@@ -340,33 +372,33 @@ body.light-mode .option.wrong {
 
         .completion-box h2 {
             color: #f39c12;
-            font-size: 2.5em;
-            margin-bottom: 20px;
+            font-size: 2em;
+            margin-bottom: 15px;
         }
 
         .completion-box p {
-            font-size: 1.3em;
-            margin-bottom: 20px;
+            font-size: 1.2em;
+            margin-bottom: 15px;
             color: #b8c7de;
         }
 
         .completion-box .final-score {
-            font-size: 2em;
+            font-size: 1.8em;
             color: #27ae60;
             font-weight: bold;
-            margin: 20px 0;
+            margin: 15px 0;
         }
 
         .restart-btn {
             background: #f39c12;
             color: #0f172a;
             border: none;
-            padding: 15px 40px;
-            font-size: 1.2em;
+            padding: 12px 30px;
+            font-size: 1.1em;
             border-radius: 50px;
             cursor: pointer;
             font-weight: bold;
-            margin-top: 20px;
+            margin-top: 15px;
             transition: 0.3s;
         }
 
@@ -378,98 +410,116 @@ body.light-mode .option.wrong {
         /* الفوتر */
         .footer {
             text-align: center;
-            padding: 20px;
+            padding: 15px;
             color: #5a6a7a;
             border-top: 1px solid #1e2a3a;
-            margin-top: 30px;
-            font-size: 0.9em;
+            margin-top: 15px;
+            font-size: 0.8em;
         }
 
-        /* الفوتر */
-        .footer {
-            text-align: center;
-            padding: 20px;
-            color: #5a6a7a;
-            border-top: 1px solid #1e2a3a;
-            margin-top: 30px;
-            font-size: 0.9em;
-        }
-
-        /* هنا ضيف التحسينات الجديدة */
+        /* تحسينات للهاتف - كل شيء في شاشة واحدة */
         @media (max-width: 480px) {
             .header h1 {
-                font-size: 1.8em;
+                font-size: 1.5em;
+            }
+            
+            .header h2 {
+                font-size: 0.9em !important;
             }
             
             .stats-bar {
-                flex-direction: column;
-                gap: 10px;
+                padding: 6px 10px;
             }
             
             #score, #question-counter {
-                width: 100%;
-                text-align: center;
+                font-size: 0.9em;
+                padding: 4px 10px;
             }
             
             #question {
-                font-size: 1.6em;
-                padding: 20px 15px;
+                font-size: 1.4em;
+                padding: 15px 12px;
+                min-height: 70px;
+                margin-bottom: 12px;
             }
             
             .option {
-                padding: 15px 12px;
-                font-size: 1em;
-            }
-            
-            #next-btn {
-                width: 100%;
-                min-width: auto;
-            }
-            
-            .completion-box {
-                padding: 30px 15px;
-            }
-            
-            .completion-box h2 {
-                font-size: 2em;
-            }
-        }
-
-        @media (max-width: 350px) {
-            .header .names {
-                font-size: 0.9em;
-                padding: 8px 12px;
+                padding: 10px 10px;
+                font-size: 0.95em;
+                min-height: 60px;
             }
             
             .option-letter {
-                width: 25px;
-                height: 25px;
-                line-height: 25px;
+                width: 24px;
+                height: 24px;
+                line-height: 24px;
                 margin-right: 8px;
+                font-size: 0.85em;
+            }
+            
+            #explanation {
+                padding: 12px 12px;
+                font-size: 0.95em;
+                margin-top: 12px;
+            }
+            
+            #next-btn {
+                padding: 10px 20px;
+                font-size: 1.1em;
+            }
+            
+            .completion-box {
+                padding: 20px 15px;
+            }
+            
+            .completion-box h2 {
+                font-size: 1.6em;
+            }
+            
+            .main-container {
+                padding: 5px;
+            }
+            
+            #game-container {
+                padding: 12px;
             }
         }
-    </style> <!-- هنا يقفل الـ Style -->
+
+        /* للشاشات الصغيرة جداً */
+        @media (max-width: 350px) {
+            .header .names {
+                font-size: 0.8em;
+                padding: 5px 10px;
+            }
+            
+            #question {
+                font-size: 1.2em;
+            }
+        }
     </style>
 </head>
 <body>
 
-<div class="header">
-    <h2 style="color:#b8c7de; font-size:1.2em; margin-bottom:5px;">الجامعة التقنية الشمالية</h2>
-    <h2 style="color:#b8c7de; font-size:1.1em; margin-bottom:5px;">الكلية التقنية الهندسية</h2>
-    <h2 style="color:#b8c7de; font-size:1.1em; margin-bottom:15px;">قسم هندسة تقنيات الصناعات الكيمياوية والنفطية</h2>   
+<!-- زر تبديل الوضع الفاتح/الداكن -->
+<div class="theme-toggle" onclick="toggleTheme()" id="themeToggle">🌙</div>
 
- <h1>🏭 English for Oil & Chemical Industries</h1>
+<div class="header">
+    <h2 style="color:#b8c7de; font-size:1.1em; margin-bottom:3px;">الجامعة التقنية الشمالية</h2>
+    <h2 style="color:#b8c7de; font-size:1.0em; margin-bottom:3px;">الكلية التقنية الهندسية</h2>
+    <h2 style="color:#b8c7de; font-size:1.0em; margin-bottom:10px;">قسم هندسة تقنيات الصناعات الكيمياوية والنفطية</h2>   
+
+    <h1>🏭 English for Oil & Chemical Industries</h1>
     <div class="subtitle">تدرب على الإنجليزية في بيئة العمل</div>
     
     <div class="names">
         <span>👥</span>
         <span class="name"> فكرة : دنيا اكرم علي</span>
         <span style="color:#f39c12;"> & </span>
-        <span class="name">محمد عامر اسماعيل  </span>
+        <span class="name">محمد عامر اسماعيل</span>
     </div>
     
     <div class="designer">
-        <span>تصميم وتنفيذ: <strong>عزام عصام</strong> </span>
+        <span>تصميم وتنفيذ: <strong>عزام عصام</strong></span>
     </div>
 </div>
 
@@ -478,7 +528,7 @@ body.light-mode .option.wrong {
         <!-- شريط الإحصائيات -->
         <div class="stats-bar">
             <div id="score">🏆 النقاط: 0</div>
-            <div id="question-counter">السؤال 1 / 100</div>
+            <div id="question-counter">السؤال 1 / 150</div>
         </div>
         
         <!-- شريط التقدم -->
@@ -496,7 +546,7 @@ body.light-mode .option.wrong {
 </div>
 
 <script>
-    // ====== 100 جملة عن بيئة العمل في المصفى ======
+    // ====== 150 جملة عن بيئة العمل في المصفى ======
     const questions = [
         // 1-10: السلامة والمعدات
         { "ar": "الضغط في المفاعل مرتفع جداً.", "options": ["The pressure in the reactor is very high.", "The temperature in the reactor is very high.", "The flow in the reactor is very high.", "The level in the reactor is very high."], "correct": 0, "explanation": "✅ 'The pressure in the reactor is very high.' - كلمة Pressure تعني الضغط، و Reactor هي المفاعل." },
@@ -616,11 +666,71 @@ body.light-mode .option.wrong {
         { "ar": "لا تنس تسجيل الدخول.", "options": ["Don't forget to sign in.", "Don't forget to sign out.", "Don't forget to work.", "Don't forget to eat."], "correct": 0, "explanation": "✅ 'Sign in' تعني سجل الدخول." },
         { "ar": "هاتفك مغلق.", "options": ["Your phone is off.", "Your phone is on.", "Your phone is ringing.", "Your phone is lost."], "correct": 0, "explanation": "✅ 'Off' تعني مغلق." },
         { "ar": "شكراً لتعاونكم.", "options": ["Thank you for your cooperation.", "Thank you for your help.", "Thank you for your work.", "Thank you for coming."], "correct": 0, "explanation": "✅ 'Cooperation' هو التعاون." },
-        { "ar": "نلتقي غداً إن شاء الله.", "options": ["See you tomorrow, God willing.", "See you next week.", "See you later.", "Goodbye forever."], "correct": 0, "explanation": "✅ 'God willing' هي إن شاء الله." }
+        { "ar": "نلتقي غداً إن شاء الله.", "options": ["See you tomorrow, God willing.", "See you next week.", "See you later.", "Goodbye forever."], "correct": 0, "explanation": "✅ 'God willing' هي إن شاء الله." },
+        
+        // 101-110: أوامر السلامة الإضافية
+        { "ar": "ارتدِ نظارات السلامة في المختبر.", "options": ["Wear safety goggles in the lab.", "Wear a hard hat in the lab.", "Wear gloves in the lab.", "Take off safety goggles in the lab."], "correct": 0, "explanation": "✅ 'Safety goggles' هي نظارات السلامة." },
+        { "ar": "اغسل يديك قبل مغادرة المختبر.", "options": ["Wash your hands before leaving the lab.", "Wash your hands after eating.", "Dry your hands before leaving.", "Wash your face before leaving."], "correct": 0, "explanation": "✅ 'Wash your hands' يعني اغسل يديك." },
+        { "ar": "لا تلمس الأنابيب الساخنة.", "options": ["Do not touch the hot pipes.", "Do not touch the cold pipes.", "Touch the hot pipes carefully.", "Do not look at the pipes."], "correct": 0, "explanation": "✅ 'Hot pipes' هي الأنابيب الساخنة." },
+        { "ar": "اتبع إجراءات الإغلاق الصحيحة.", "options": ["Follow the correct lockout procedures.", "Follow the correct startup procedures.", "Ignore the lockout procedures.", "Follow the safety rules."], "correct": 0, "explanation": "✅ 'Lockout procedures' هي إجراءات الإغلاق." },
+        { "ar": "هذه منطقة خطر عالي.", "options": ["This is a high risk area.", "This is a low risk area.", "This is a safe area.", "This is a restricted area."], "correct": 0, "explanation": "✅ 'High risk area' هي منطقة خطر عالي." },
+        { "ar": "استخدم معدات الوقاية المناسبة.", "options": ["Use the appropriate protective equipment.", "Use the wrong equipment.", "Ignore the protective equipment.", "Remove the protective equipment."], "correct": 0, "explanation": "✅ 'Protective equipment' هي معدات الوقاية." },
+        { "ar": "ابلغ عن أي حادث فوراً.", "options": ["Report any accident immediately.", "Ignore any accident.", "Report any accident tomorrow.", "Hide any accident."], "correct": 0, "explanation": "✅ 'Report any accident' يعني أبلغ عن أي حادث." },
+        { "ar": "تأكد من وجود تهوية كافية.", "options": ["Make sure there is adequate ventilation.", "Make sure there is no ventilation.", "Close all windows.", "Turn off the fans."], "correct": 0, "explanation": "✅ 'Adequate ventilation' هي تهوية كافية." },
+        { "ar": "لا تعمل بمفردك في هذه المنطقة.", "options": ["Do not work alone in this area.", "Work alone in this area.", "Work with a friend.", "Do not enter this area."], "correct": 0, "explanation": "✅ 'Work alone' يعني تعمل بمفردك." },
+        { "ar": "هذه المواد قابلة للاشتعال.", "options": ["These materials are flammable.", "These materials are safe.", "These materials are wet.", "These materials are cold."], "correct": 0, "explanation": "✅ 'Flammable' تعني قابلة للاشتعال." },
+        
+        // 111-120: أوامر التشغيل
+        { "ar": "ابدأ تشغيل المضخة تدريجياً.", "options": ["Start the pump gradually.", "Start the pump quickly.", "Stop the pump gradually.", "Start the motor gradually."], "correct": 0, "explanation": "✅ 'Gradually' تعني تدريجياً." },
+        { "ar": "راقب درجة الحرارة باستمرار.", "options": ["Monitor the temperature continuously.", "Monitor the pressure continuously.", "Ignore the temperature.", "Check the temperature once."], "correct": 0, "explanation": "✅ 'Monitor continuously' تعني راقب باستمرار." },
+        { "ar": "سجل القراءات كل 15 دقيقة.", "options": ["Record the readings every 15 minutes.", "Record the readings every hour.", "Record the readings every day.", "Record the pressure every 15 minutes."], "correct": 0, "explanation": "✅ 'Every 15 minutes' تعني كل 15 دقيقة." },
+        { "ar": "اضبط صمام التحكم على الوضع 5.", "options": ["Set the control valve to position 5.", "Set the control valve to open.", "Close the control valve.", "Set the relief valve to position 5."], "correct": 0, "explanation": "✅ 'Set to position 5' يعني اضبط على الوضع 5." },
+        { "ar": "زد معدل التدفق بمقدار 10%.", "options": ["Increase the flow rate by 10%.", "Decrease the flow rate by 10%.", "Increase the pressure by 10%.", "Increase the flow rate by 20%."], "correct": 0, "explanation": "✅ 'Increase by 10%' تعني زد بمقدار 10%." },
+        { "ar": "أنهي عملية التقطير الآن.", "options": ["Finish the distillation process now.", "Start the distillation process now.", "Finish the cracking process now.", "Finish the distillation process later."], "correct": 0, "explanation": "✅ 'Finish the process' يعني أنهي العملية." },
+        { "ar": "حافظ على استقرار الضغط.", "options": ["Keep the pressure stable.", "Keep the pressure high.", "Keep the pressure low.", "Keep the temperature stable."], "correct": 0, "explanation": "✅ 'Keep stable' يعني حافظ على الاستقرار." },
+        { "ar": "تجنب التغيرات المفاجئة.", "options": ["Avoid sudden changes.", "Make sudden changes.", "Avoid slow changes.", "Ignore the changes."], "correct": 0, "explanation": "✅ 'Sudden changes' هي التغيرات المفاجئة." },
+        { "ar": "حافظ على مستوى السائل ثابتاً.", "options": ["Keep the liquid level constant.", "Keep the liquid level changing.", "Keep the pressure constant.", "Keep the temperature constant."], "correct": 0, "explanation": "✅ 'Constant' تعني ثابت." },
+        { "ar": "أوقف التشغيل في حالة الطوارئ.", "options": ["Shut down in case of emergency.", "Start up in case of emergency.", "Continue in case of emergency.", "Ignore in case of emergency."], "correct": 0, "explanation": "✅ 'Shut down' يعني أوقف التشغيل." },
+        
+        // 121-130: أوامر الصيانة
+        { "ar": "افحص المضخة بحثاً عن تسريبات.", "options": ["Check the pump for leaks.", "Check the pump for noise.", "Check the valve for leaks.", "Check the pump for heat."], "correct": 0, "explanation": "✅ 'Check for leaks' يعني افحص بحثاً عن تسريبات." },
+        { "ar": "نظف الفلتر أسبوعياً.", "options": ["Clean the filter weekly.", "Clean the filter monthly.", "Replace the filter weekly.", "Clean the pump weekly."], "correct": 0, "explanation": "✅ 'Weekly' تعني أسبوعياً." },
+        { "ar": "شحم المحامل كل شهر.", "options": ["Grease the bearings monthly.", "Grease the bearings weekly.", "Clean the bearings monthly.", "Replace the bearings monthly."], "correct": 0, "explanation": "✅ 'Grease' تعني شحم، 'Bearings' هي المحامل." },
+        { "ar": "افحص شد السيور.", "options": ["Check the belt tension.", "Check the belt color.", "Check the belt length.", "Check the motor tension."], "correct": 0, "explanation": "✅ 'Belt tension' هو شد السيور." },
+        { "ar": "استبدل الأجزاء البالية.", "options": ["Replace worn parts.", "Clean worn parts.", "Repair worn parts.", "Ignore worn parts."], "correct": 0, "explanation": "✅ 'Worn parts' هي الأجزاء البالية." },
+        { "ar": "أحكم ربط المسامير المفكوكة.", "options": ["Tighten loose bolts.", "Loosen tight bolts.", "Remove loose bolts.", "Tighten all bolts."], "correct": 0, "explanation": "✅ 'Loose bolts' هي المسامير المفكوكة." },
+        { "ar": "سجل أعمال الصيانة في السجل.", "options": ["Record maintenance work in the log.", "Record production in the log.", "Ignore maintenance work.", "Record maintenance work later."], "correct": 0, "explanation": "✅ 'Maintenance work' هي أعمال الصيانة." },
+        { "ar": "أوقف المعدات قبل الصيانة.", "options": ["Stop equipment before maintenance.", "Start equipment before maintenance.", "Stop equipment after maintenance.", "Ignore equipment before maintenance."], "correct": 0, "explanation": "✅ 'Stop equipment' يعني أوقف المعدات." },
+        { "ar": "استخدم أدوات معزولة للأعمال الكهربائية.", "options": ["Use insulated tools for electrical work.", "Use regular tools for electrical work.", "Use insulated tools for plumbing.", "Use metal tools for electrical work."], "correct": 0, "explanation": "✅ 'Insulated tools' هي أدوات معزولة." },
+        { "ar": "افحص التأريض الكهربائي.", "options": ["Check the electrical grounding.", "Check the electrical wiring.", "Check the electrical voltage.", "Check the electrical current."], "correct": 0, "explanation": "✅ 'Electrical grounding' هو التأريض الكهربائي." },
+        
+        // 131-140: أوامر المختبر
+        { "ar": "استخدم الماصة بدقة.", "options": ["Use the pipette accurately.", "Use the pipette quickly.", "Use the beaker accurately.", "Use the pipette carefully."], "correct": 0, "explanation": "✅ 'Pipette' هي الماصة، 'Accurately' تعني بدقة." },
+        { "ar": "معايرة جهاز قياس الأس الهيدروجيني.", "options": ["Calibrate the pH meter.", "Calibrate the thermometer.", "Clean the pH meter.", "Turn off the pH meter."], "correct": 0, "explanation": "✅ 'pH meter' هو جهاز قياس الأس الهيدروجيني." },
+        { "ar": "سجل نتائج التحليل فوراً.", "options": ["Record analysis results immediately.", "Record analysis results later.", "Ignore analysis results.", "Record production results immediately."], "correct": 0, "explanation": "✅ 'Immediately' تعني فوراً." },
+        { "ar": "تخلص من العينة بأمان.", "options": ["Dispose of the sample safely.", "Dispose of the sample carelessly.", "Keep the sample forever.", "Dispose of the sample in the sink."], "correct": 0, "explanation": "✅ 'Dispose safely' يعني تخلص بأمان." },
+        { "ar": "ضع ملصقاً على العينة.", "options": ["Label the sample.", "Drink the sample.", "Heat the sample.", "Freeze the sample."], "correct": 0, "explanation": "✅ 'Label' يعني ضع ملصقاً." },
+        { "ar": "احفظ العينة في مكان بارد.", "options": ["Store the sample in a cool place.", "Store the sample in a hot place.", "Store the sample outside.", "Store the sample in water."], "correct": 0, "explanation": "✅ 'Cool place' هو مكان بارد." },
+        { "ar": "كرر التحليل ثلاث مرات.", "options": ["Repeat the analysis three times.", "Repeat the analysis once.", "Repeat the analysis twice.", "Stop the analysis."], "correct": 0, "explanation": "✅ 'Three times' تعني ثلاث مرات." },
+        { "ar": "قارن النتائج مع المواصفات.", "options": ["Compare results with specifications.", "Compare results with yesterday.", "Compare results with nothing.", "Compare samples with specifications."], "correct": 0, "explanation": "✅ 'Compare with' يعني قارن مع." },
+        { "ar": "استخدم المياه المقطرة.", "options": ["Use distilled water.", "Use tap water.", "Use sea water.", "Use hot water."], "correct": 0, "explanation": "✅ 'Distilled water' هي المياه المقطرة." },
+        { "ar": "نظف الأدوات بعد الاستخدام.", "options": ["Clean tools after use.", "Clean tools before use.", "Use dirty tools.", "Store tools dirty."], "correct": 0, "explanation": "✅ 'After use' يعني بعد الاستخدام." },
+        
+        // 141-150: التواصل في العمل
+        { "ar": "سأكون في اجتماع الساعة 10.", "options": ["I'll be in a meeting at 10 o'clock.", "I'll be in the lab at 10 o'clock.", "I'll be at home at 10 o'clock.", "I'll be in a meeting tomorrow."], "correct": 0, "explanation": "✅ 'Meeting' هو الاجتماع." },
+        { "ar": "من فضلك، انتظر هنا.", "options": ["Please, wait here.", "Please, go there.", "Please, leave now.", "Please, sit here."], "correct": 0, "explanation": "✅ 'Wait here' يعني انتظر هنا." },
+        { "ar": "سأعود بعد قليل.", "options": ["I'll be back shortly.", "I'll be back tomorrow.", "I'll be back next week.", "I'll never come back."], "correct": 0, "explanation": "✅ 'Shortly' تعني بعد قليل." },
+        { "ar": "هل يمكنني التحدث مع المشرف؟", "options": ["Can I speak with the supervisor?", "Can I speak with the operator?", "Can I leave now?", "Can I go home?"], "correct": 0, "explanation": "✅ 'Speak with' يعني أتحدث مع." },
+        { "ar": "شكراً لمساعدتك.", "options": ["Thank you for your help.", "Thank you for your time.", "Thank you for your work.", "Thank you for coming."], "correct": 0, "explanation": "✅ 'Help' هي المساعدة." },
+        { "ar": "أنا آسف، لم أفهم.", "options": ["I'm sorry, I didn't understand.", "I'm sorry, I don't care.", "I'm happy, I understand.", "I'm sorry, I'm busy."], "correct": 0, "explanation": "✅ 'I didn't understand' تعني لم أفهم." },
+        { "ar": "هل يمكنك تكرار ذلك من فضلك؟", "options": ["Can you repeat that, please?", "Can you stop that, please?", "Can you write that, please?", "Can you leave, please?"], "correct": 0, "explanation": "✅ 'Repeat' تعني كرر." },
+        { "ar": "سأحضر الأداة حالاً.", "options": ["I'll bring the tool immediately.", "I'll bring the tool tomorrow.", "I'll forget the tool.", "I'll buy the tool later."], "correct": 0, "explanation": "✅ 'Bring' تعني أحضر." },
+        { "ar": "أين توجد طفاية الحريق؟", "options": ["Where is the fire extinguisher?", "Where is the first aid kit?", "Where is the exit?", "Where is the bathroom?"], "correct": 0, "explanation": "✅ 'Fire extinguisher' هي طفاية الحريق." },
+        { "ar": "أحتاج مساعدتك في هذا الأمر.", "options": ["I need your help with this.", "I need your car with this.", "I need your money with this.", "I need your time with this."], "correct": 0, "explanation": "✅ 'I need your help' تعني أحتاج مساعدتك." }
     ];
 
     // ====== متغيرات الحالة ======
-    let remainingQuestions = []; // الأسئلة المتبقية
+    let remainingQuestions = [];
     let currentQuestion = null;
     let score = 0;
     let questionsAnswered = 0;
@@ -629,7 +739,7 @@ body.light-mode .option.wrong {
     let quizFinished = false;
     const displayLetters = ["A", "B", "C", "D"];
 
-    // ====== خلط الخيارات ======
+    // ====== دالة خلط المصفوفة ======
     function shuffle(arr){
         for(let i = arr.length - 1; i > 0; i--){
             let j = Math.floor(Math.random() * (i + 1));
@@ -638,22 +748,20 @@ body.light-mode .option.wrong {
     }
 
     // ====== تهيئة اللعبة ======
-  // ====== تهيئة اللعبة ======
-function initGame() {
-    // نسخ الأسئلة إلى المتبقية
-    remainingQuestions = [...questions];
-    
-    // 🔄 خلط الأسئلة في كل مرة
-    for(let i = remainingQuestions.length - 1; i > 0; i--){
-        let j = Math.floor(Math.random() * (i + 1));
-        [remainingQuestions[i], remainingQuestions[j]] = [remainingQuestions[j], remainingQuestions[i]];
+    function initGame() {
+        remainingQuestions = [...questions];
+        
+        // خلط الأسئلة
+        for(let i = remainingQuestions.length - 1; i > 0; i--){
+            let j = Math.floor(Math.random() * (i + 1));
+            [remainingQuestions[i], remainingQuestions[j]] = [remainingQuestions[j], remainingQuestions[i]];
+        }
+        
+        score = 0;
+        questionsAnswered = 0;
+        quizFinished = false;
+        loadNextQuestion();
     }
-    
-    score = 0;
-    questionsAnswered = 0;
-    quizFinished = false;
-    loadNextQuestion();
-}
 
     // ====== تحميل السؤال التالي ======
     function loadNextQuestion() {
@@ -662,23 +770,18 @@ function initGame() {
             return;
         }
 
-        // أخذ أول سؤال من المتبقية
         currentQuestion = remainingQuestions[0];
-        
-        // تحديث الإحصائيات
         questionsAnswered++;
         updateStats();
-        
-        // عرض السؤال
         renderQuestion();
     }
 
     // ====== تحديث الإحصائيات ======
     function updateStats() {
         document.getElementById("score").textContent = `🏆 النقاط: ${score}`;
-        document.getElementById("question-counter").textContent = `السؤال ${questionsAnswered} / 100`;
+        document.getElementById("question-counter").textContent = `السؤال ${questionsAnswered} / 150`;
         
-        const progressPercent = (questionsAnswered / 100) * 100;
+        const progressPercent = (questionsAnswered / 150) * 100;
         document.getElementById("progress-fill").style.width = `${progressPercent}%`;
     }
 
@@ -686,17 +789,14 @@ function initGame() {
     function renderQuestion() {
         const dynamicContent = document.getElementById("dynamic-content");
         
-        // تجهيز الخيارات المخلوطة
         shuffledOptions = currentQuestion.options.map((text, index) => ({
             text: text,
             originalIndex: index
         }));
         shuffle(shuffledOptions);
         
-        // العثور على موقع الإجابة الصحيحة بعد الخلط
         correctIndex = shuffledOptions.findIndex(opt => opt.originalIndex === currentQuestion.correct);
 
-        // بناء HTML
         let html = `
             <div id="question">${currentQuestion.ar}</div>
             
@@ -723,24 +823,17 @@ function initGame() {
         `;
         
         dynamicContent.innerHTML = html;
-        
-        // إخفاء زر التالي في البداية
         document.getElementById("next-btn").style.display = "none";
     }
 
     // ====== فحص الإجابة ======
     window.checkAnswer = function(selected) {
-        // منع الإجابة مرتين
         const buttons = document.querySelectorAll(".option");
         if (buttons[0].disabled) return;
         
-        // تعطيل جميع الأزرار
         buttons.forEach(b => b.disabled = true);
-        
-        // تلوين الإجابة الصحيحة
         buttons[correctIndex].classList.add("correct");
         
-        // التحقق من الإجابة
         if (selected === correctIndex) {
             score++;
             document.getElementById("explanation").innerHTML = `✅ ${currentQuestion.explanation}`;
@@ -749,16 +842,12 @@ function initGame() {
             document.getElementById("explanation").innerHTML = `❌ ${currentQuestion.explanation}`;
         }
         
-        // تحديث النتيجة
         updateStats();
-        
-        // إظهار زر السؤال التالي
         document.getElementById("next-btn").style.display = "inline-block";
     }
 
     // ====== السؤال التالي ======
     window.nextQuestion = function() {
-        // إزالة السؤال الحالي من المتبقية
         remainingQuestions = remainingQuestions.filter(q => q !== currentQuestion);
         
         if (remainingQuestions.length === 0) {
@@ -777,15 +866,28 @@ function initGame() {
             <div class="completion-box">
                 <h2>🎉 مبروك! 🎉</h2>
                 <p>لقد أكملت جميع الأسئلة</p>
-                <div class="final-score">نتيجتك: ${score} من 100</div>
-                <p>${score >= 80 ? 'ممتاز! 👍' : score >= 60 ? 'جيد جداً 👏' : 'حاول مرة أخرى للتطوير 💪'}</p>
+                <div class="final-score">نتيجتك: ${score} من 150</div>
+                <p>${score >= 120 ? 'ممتاز! 👍' : score >= 90 ? 'جيد جداً 👏' : score >= 60 ? 'جيد 👌' : 'حاول مرة أخرى للتطوير 💪'}</p>
                 <button class="restart-btn" onclick="initGame()">🔄 ابدأ من جديد</button>
             </div>
         `;
         
-        // تحديث شريط التقدم
         document.getElementById("progress-fill").style.width = "100%";
-        document.getElementById("question-counter").textContent = `السؤال 100 / 100`;
+        document.getElementById("question-counter").textContent = `السؤال 150 / 150`;
+    }
+
+    // ====== تبديل الوضع الفاتح/الداكن ======
+    window.toggleTheme = function() {
+        const body = document.body;
+        const toggle = document.getElementById("themeToggle");
+        
+        if (body.classList.contains("light-mode")) {
+            body.classList.remove("light-mode");
+            toggle.textContent = "🌙";
+        } else {
+            body.classList.add("light-mode");
+            toggle.textContent = "☀️";
+        }
     }
 
     // ====== بدء التشغيل ======
