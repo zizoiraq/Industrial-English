@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تدرب على الإنجليزية في بيئة العمل - مصفى نفطي</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0f1e;
+            color: #e0e0e0;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* الهيدر بتصميم جديد */
+        .header {
+            background: linear-gradient(135deg, #0b1120 0%, #1a2639 100%);
+            color: white;
+            padding: 25px 20px;
+            text-align: center;
+            border-bottom: 3px solid #f39c12;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+
+        .header h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            color: #f39c12;
+            text-shadow: 0 2px 5px rgba(243, 156, 18, 0.3);
+        }
+
+        .header .subtitle {
+            color: #b8c7de;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+
+        .header .names {
+            background: rgba(243, 156, 18, 0.15);
+            padding: 12px 20px;
+            border-radius: 50px;
+            display: inline-block;
+            margin: 10px 0;
+            border: 1px solid #f39c12;
+            backdrop-filter: blur(5px);
+        }
+
+        .header .names span {
+            color: #f39c12;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .header .names .name {
+            color: #ecf0f1;
+            margin: 0 5px;
+        }
+
+        .header .designer {
+            margin-top: 15px;
+            color: #95a5a6;
+            font-size: 0.95em;
+            border-top: 1px dashed #34495e;
+            padding-top: 15px;
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .header .designer strong {
+            color: #f39c12;
+            font-size: 1.1em;
+        }
+
+        /* الحاوية الرئيسية */
+        .main-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 20px;
+        }
+
+        #game-container {
+            background: #141c2c;
+            margin: 0 auto;
+            padding: 35px 30px;
+            border-radius: 25px;
+            width: 100%;
+            max-width: 800px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+            border: 1px solid #2a3a4f;
+            transition: all 0.3s ease;
+        }
+
+        /* شريط التقدم والإحصائيات */
+        .stats-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #0f172a;
+            padding: 15px 20px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            border: 1px solid #2a3f5a;
+        }
+
+        #score {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #f39c12;
+            background: #1e293b;
+            padding: 8px 20px;
+            border-radius: 50px;
+            border: 1px solid #f39c12;
+        }
+
+        #question-counter {
+            font-size: 1.2em;
+            color: #b8c7de;
+            background: #1e293b;
+            padding: 8px 20px;
+            border-radius: 50px;
+            border: 1px solid #3a4e62;
+        }
+
+        #progress-bar {
+            height: 8px;
+            background: #1e293b;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+
+        #progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #f39c12, #e67e22);
+            width: 0%;
+            transition: width 0.4s ease;
+            border-radius: 10px;
+        }
+
+        /* صندوق السؤال */
+        #question {
+            font-size: 2em;
+            margin-bottom: 35px;
+            min-height: 100px;
+            direction: rtl;
+            text-align: center;
+            background: #1a2639;
+            padding: 30px 25px;
+            border-radius: 20px;
+            border-right: 5px solid #f39c12;
+            font-weight: bold;
+            line-height: 1.6;
+            color: #ecf0f1;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.3);
+            border-left: 1px solid #2a3f5a;
+            border-top: 1px solid #2a3f5a;
+            border-bottom: 1px solid #2a3f5a;
+            word-spacing: 2px;
+        }
+
+        /* شبكة الخيارات */
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        @media (max-width: 600px) {
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .option {
+            background: #1e2a3a;
+            padding: 18px 15px;
+            border-radius: 15px;
+            cursor: pointer;
+            color: #e0e0e0;
+            border: 2px solid #2a3f5a;
+            font-size: 1.1em;
+            direction: ltr;
+            text-align: left;
+            transition: all 0.2s;
+            font-weight: 500;
+            min-height: 85px;
+            display: flex;
+            align-items: center;
+            word-break: break-word;
+            line-height: 1.5;
+        }
+
+        .option:hover:not(:disabled) {
+            background: #2a3f5a;
+            border-color: #f39c12;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        .option:disabled {
+            opacity: 0.8;
+            cursor: not-allowed;
+        }
+
+        .option.correct { 
+            background: #27ae60 !important; 
+            border-color: #2ecc71 !important;
+            box-shadow: 0 0 20px rgba(46, 204, 113, 0.5);
+            color: white;
+        }
+        
+        .option.wrong { 
+            background: #c0392b !important; 
+            border-color: #e74c3c !important;
+            box-shadow: 0 0 20px rgba(231, 76, 60, 0.3);
+        }
+
+        .option-letter {
+            display: inline-block;
+            background: #0f172a;
+            color: #f39c12;
+            font-weight: bold;
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            border-radius: 50%;
+            margin-right: 12px;
+            font-size: 1em;
+            border: 1px solid #f39c12;
+        }
+
+        .option.correct .option-letter,
+        .option.wrong .option-letter {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border-color: white;
+        }
+
+        /* صندوق الشرح */
+        #explanation {
+            margin-top: 25px;
+            padding: 20px 25px;
+            font-size: 1.2em;
+            min-height: 80px;
+            direction: rtl;
+            text-align: center;
+            background: #0f1825;
+            border-radius: 15px;
+            border-right: 5px solid #3498db;
+            line-height: 1.8;
+            color: #ecf0f1;
+            border-left: 1px solid #2a3f5a;
+            border-top: 1px solid #2a3f5a;
+            border-bottom: 1px solid #2a3f5a;
+        }
+
+        /* زر السؤال التالي */
+        .next-btn-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        #next-btn {
+            padding: 15px 50px;
+            font-size: 1.4em;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            color: #0f172a;
+            transition: all 0.3s;
+            display: none;
+            font-weight: bold;
+            width: auto;
+            min-width: 250px;
+            border: 1px solid #f39c12;
+            box-shadow: 0 5px 15px rgba(243, 156, 18, 0.3);
+        }
+
+        #next-btn:hover { 
+            background: linear-gradient(135deg, #e67e22, #d35400);
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(243, 156, 18, 0.5);
+        }
+
+        /* رسالة النهاية */
+        .completion-box {
+            text-align: center;
+            padding: 50px 30px;
+            background: #1a2639;
+            border-radius: 20px;
+            border: 2px solid #f39c12;
+        }
+
+        .completion-box h2 {
+            color: #f39c12;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .completion-box p {
+            font-size: 1.3em;
+            margin-bottom: 20px;
+            color: #b8c7de;
+        }
+
+        .completion-box .final-score {
+            font-size: 2em;
+            color: #27ae60;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        .restart-btn {
+            background: #f39c12;
+            color: #0f172a;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 20px;
+            transition: 0.3s;
+        }
+
+        .restart-btn:hover {
+            background: #e67e22;
+            transform: scale(1.05);
+        }
+
+        /* الفوتر */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #5a6a7a;
+            border-top: 1px solid #1e2a3a;
+            margin-top: 30px;
+            font-size: 0.9em;
+        }
+
+        /* الفوتر */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #5a6a7a;
+            border-top: 1px solid #1e2a3a;
+            margin-top: 30px;
+            font-size: 0.9em;
+        }
+
+        /* هنا ضيف التحسينات الجديدة */
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .stats-bar {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            #score, #question-counter {
+                width: 100%;
+                text-align: center;
+            }
+            
+            #question {
+                font-size: 1.6em;
+                padding: 20px 15px;
+            }
+            
+            .option {
+                padding: 15px 12px;
+                font-size: 1em;
+            }
+            
+            #next-btn {
+                width: 100%;
+                min-width: auto;
+            }
+            
+            .completion-box {
+                padding: 30px 15px;
+            }
+            
+            .completion-box h2 {
+                font-size: 2em;
+            }
+        }
+
+        @media (max-width: 350px) {
+            .header .names {
+                font-size: 0.9em;
+                padding: 8px 12px;
+            }
+            
+            .option-letter {
+                width: 25px;
+                height: 25px;
+                line-height: 25px;
+                margin-right: 8px;
+            }
+        }
+    </style> <!-- هنا يقفل الـ Style -->
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h2 style="color:#b8c7de; font-size:1.2em; margin-bottom:5px;">الجامعة التقنية الشمالية</h2>
+    <h2 style="color:#b8c7de; font-size:1.1em; margin-bottom:5px;">الكلية التقنية الهندسية</h2>
+    <h2 style="color:#b8c7de; font-size:1.1em; margin-bottom:15px;">قسم هندسة تقنيات الصناعات الكيمياوية والنفطية</h2>   
+
+ <h1>🏭 English for Oil & Chemical Industries</h1>
+    <div class="subtitle">تدرب على الإنجليزية في بيئة العمل</div>
+    
+    <div class="names">
+        <span>👥</span>
+        <span class="name"> فكرة : دنيا اكرم علي</span>
+        <span style="color:#f39c12;"> & </span>
+        <span class="name">محمد عامر اسماعيل  </span>
+    </div>
+    
+    <div class="designer">
+        <span>تصميم وتنفيذ: <strong>عزام عصام</strong> </span>
+    </div>
+</div>
+
+<div class="main-container">
+    <div id="game-container">
+        <!-- شريط الإحصائيات -->
+        <div class="stats-bar">
+            <div id="score">🏆 النقاط: 0</div>
+            <div id="question-counter">السؤال 1 / 100</div>
+        </div>
+        
+        <!-- شريط التقدم -->
+        <div id="progress-bar">
+            <div id="progress-fill"></div>
+        </div>
+        
+        <!-- محتوى اللعبة الديناميكي -->
+        <div id="dynamic-content"></div>
+    </div>
+</div>
+
+<div class="footer">
+    <p>الجامعة التقنية الشمالية - الكلية التقنية الهندسية - قسم هندسة تقنيات الصناعات الكيمياوية والنفطية</p>
+</div>
+
+<script>
+    // ====== 100 جملة عن بيئة العمل في المصفى ======
+    const questions = [
+        // 1-10: السلامة والمعدات
+        { "ar": "الضغط في المفاعل مرتفع جداً.", "options": ["The pressure in the reactor is very high.", "The temperature in the reactor is very high.", "The flow in the reactor is very high.", "The level in the reactor is very high."], "correct": 0, "explanation": "✅ 'The pressure in the reactor is very high.' - كلمة Pressure تعني الضغط، و Reactor هي المفاعل." },
+        { "ar": "نحتاج لأخذ عينة من قاع العمود.", "options": ["We need to take a sample from the top of the column.", "We need to take a sample from the bottom of the column.", "We need to take a reading from the bottom of the column.", "We need to take a sample from the bottom of the tank."], "correct": 1, "explanation": "✅ 'We need to take a sample from the bottom of the column.' - Bottom تعني قاع، و Column هو العمود." },
+        { "ar": "هل يمكنك فحص مضخة الطرد المركزي؟", "options": ["Can you check the centrifugal compressor?", "Can you check the centrifugal pump?", "Can you fix the centrifugal pump?", "Can you check the reciprocating pump?"], "correct": 1, "explanation": "✅ 'Can you check the centrifugal pump?' - Centrifugal pump هي مضخة طرد مركزي." },
+        { "ar": "سجل جميع القراءات في سجل العمليات.", "options": ["Record all the readings in the logbook.", "Read all the readings in the logbook.", "Record all the pressures in the logbook.", "Record all the readings in the notebook."], "correct": 0, "explanation": "✅ 'Record all the readings in the logbook.' - Record تعني سجل، Logbook هو سجل العمليات." },
+        { "ar": "معدل التدفق في الخط 105 هو 200 متر مكعب في الساعة.", "options": ["The flow rate in line 105 is 200 m³/h.", "The pressure in line 105 is 200 m³/h.", "The flow rate in line 105 is 200 bar.", "The temperature in line 105 is 200°C."], "correct": 0, "explanation": "✅ 'The flow rate in line 105 is 200 m³/h.' - Flow rate هو معدل التدفق." },
+        { "ar": "ارتدِ خوذة الأمان قبل دخول منطقة التشغيل.", "options": ["Wear your safety goggles before entering the process area.", "Wear your hard hat before entering the process area.", "Wear your gloves before entering the process area.", "Take off your hard hat before entering the process area."], "correct": 1, "explanation": "✅ 'Wear your hard hat before entering the process area.' - Hard hat هي خوذة الأمان." },
+        { "ar": "الإنذار يدق! اذهب إلى أقرب نقطة تجمع.", "options": ["The alarm is ringing! Go to the nearest control room.", "The alarm is ringing! Go to the nearest exit.", "The alarm is ringing! Go to the nearest muster point.", "The alarm is ringing! Go to the nearest office."], "correct": 2, "explanation": "✅ 'Go to the nearest muster point.' - Muster point هي نقطة التجمع." },
+        { "ar": "نحتاج لزيادة معدل الارتداد في عمود التقطير.", "options": ["We need to increase the reflux rate in the distillation column.", "We need to decrease the reflux rate.", "We need to increase the flow rate.", "We need to increase the reflux rate in the reactor."], "correct": 0, "explanation": "✅ 'Reflux rate' هو معدل الارتداد، 'Distillation column' هو عمود التقطير." },
+        { "ar": "الصمام معطل. نحتاج صمام عزل جديد.", "options": ["The valve is broken. We need a new control valve.", "The valve is broken. We need a new relief valve.", "The valve is broken. We need a new isolation valve.", "The pump is broken. We need a new isolation valve."], "correct": 2, "explanation": "✅ 'Isolation valve' هو صمام العزل." },
+        { "ar": "لزوجة هذه العينة عالية جداً.", "options": ["The density of this sample is very high.", "The viscosity of this sample is very high.", "The temperature of this sample is very high.", "The viscosity of this oil is very low."], "correct": 1, "explanation": "✅ 'Viscosity' هي اللزوجة." },
+        
+        // 11-20: المعدات والأعطال
+        { "ar": "درجة حرارة المبادل الحراري ترتفع بسرعة.", "options": ["The pressure of the heat exchanger is rising quickly.", "The temperature of the heat exchanger is rising quickly.", "The temperature of the heat exchanger is falling quickly.", "The temperature of the pump is rising quickly."], "correct": 1, "explanation": "✅ 'Heat exchanger' هو المبادل الحراري." },
+        { "ar": "افحص مقياس المستوى على خزان التخزين.", "options": ["Check the pressure gauge on the storage tank.", "Check the temperature gauge on the storage tank.", "Check the level gauge on the storage tank.", "Check the level gauge on the reactor."], "correct": 2, "explanation": "✅ 'Level gauge' هو مقياس المستوى، 'Storage tank' هو خزان التخزين." },
+        { "ar": "توقف عن العمل! هناك تسرب غاز.", "options": ["Keep working! There is a gas leak.", "Stop working! There is a gas leak.", "Stop working! There is a water leak.", "Stop working! There is a fire."], "correct": 1, "explanation": "✅ 'Stop working' تعني توقف عن العمل، 'Gas leak' هو تسرب غاز." },
+        { "ar": "المضخة تصدر صوتاً غريباً. ربما مشكلة في المحمل.", "options": ["The pump is making a strange noise. Maybe there is a bearing problem.", "The pump is making a strange noise. Maybe there is a motor problem.", "The pump is making a strange noise. Maybe there is a valve problem.", "The pump is making a strange noise. Maybe there is a seal problem."], "correct": 0, "explanation": "✅ 'Bearing' هو المحمل." },
+        { "ar": "ما هي قراءة الضغط على جهاز PI-101؟", "options": ["What is the temperature reading on PI-101?", "What is the pressure reading on PI-101?", "What is the flow reading on PI-101?", "What is the level reading on PI-101?"], "correct": 1, "explanation": "✅ PI تعني Pressure Indicator (مؤشر الضغط)." },
+        { "ar": "المشرف يطلب تقرير عن المناوبة الصباحية.", "options": ["The supervisor is asking for a report on the night shift.", "The supervisor is asking for a report on the morning shift.", "The operator is asking for a report on the morning shift.", "The supervisor is asking for a sample on the morning shift."], "correct": 1, "explanation": "✅ 'Morning shift' هي المناوبة الصباحية." },
+        { "ar": "تأكد من إغلاق صمام الأمان قبل بدء الصيانة.", "options": ["Make sure the isolation valve is closed.", "Make sure the control valve is open.", "Make sure the safety valve is closed.", "Make sure the safety valve is closed after finishing."], "correct": 2, "explanation": "✅ 'Safety valve' هو صمام الأمان." },
+        { "ar": "الكثافة النوعية لهذا النفط الخام هي 0.85.", "options": ["The specific gravity of this crude oil is 0.85.", "The viscosity of this crude oil is 0.85.", "The specific gravity of this diesel is 0.85.", "The density of this crude oil is 0.85 kg/m³."], "correct": 0, "explanation": "✅ 'Specific gravity' هي الكثافة النوعية." },
+        { "ar": "سنبدأ عملية التكسير التحفيزي الساعة العاشرة.", "options": ["We will start the catalytic cracking process at ten o'clock.", "We will stop the catalytic cracking process at ten o'clock.", "We will start the distillation process at ten o'clock.", "We will start the catalytic cracking process tomorrow."], "correct": 0, "explanation": "✅ 'Catalytic cracking' هو التكسير التحفيزي." },
+        { "ar": "ممنوع التدخين في هذه المنطقة.", "options": ["Smoking is allowed in this area.", "Smoking is prohibited in this area.", "Eating is prohibited in this area.", "Smoking is prohibited everywhere."], "correct": 1, "explanation": "✅ 'Prohibited' تعني ممنوع." },
+        
+        // 21-30: أوامر وإجراءات
+        { "ar": "افتح صمام التحكم ببطء.", "options": ["Open the control valve slowly.", "Close the control valve slowly.", "Open the relief valve slowly.", "Open the control valve quickly."], "correct": 0, "explanation": "✅ 'Control valve' هو صمام التحكم." },
+        { "ar": "خفض درجة الحرارة إلى 300 درجة مئوية.", "options": ["Increase the temperature to 300°C.", "Decrease the temperature to 300°C.", "Decrease the pressure to 300°C.", "Decrease the temperature to 300°F."], "correct": 1, "explanation": "✅ 'Decrease' تعني خفض." },
+        { "ar": "المبادل الحراري يحتاج تنظيف.", "options": ["The heat exchanger needs cleaning.", "The heat exchanger needs replacement.", "The pump needs cleaning.", "The heat exchanger needs inspection."], "correct": 0, "explanation": "✅ 'Cleaning' تعني تنظيف." },
+        { "ar": "قراءة مستوى السائل غير طبيعية.", "options": ["The level reading is abnormal.", "The pressure reading is abnormal.", "The level reading is normal.", "The temperature reading is abnormal."], "correct": 0, "explanation": "✅ 'Abnormal' تعني غير طبيعي." },
+        { "ar": "أعد تشغيل المضخة بعد الصيانة.", "options": ["Turn off the pump after maintenance.", "Restart the pump after maintenance.", "Restart the valve after maintenance.", "Restart the pump before maintenance."], "correct": 1, "explanation": "✅ 'Restart' تعني أعد تشغيل." },
+        { "ar": "الضغط في الحدود المسموح بها.", "options": ["The pressure is within the limits.", "The pressure is above the limits.", "The temperature is within the limits.", "The pressure is out of limits."], "correct": 0, "explanation": "✅ 'Within the limits' تعني ضمن الحدود المسموح بها." },
+        { "ar": "هناك انسداد في الخط.", "options": ["There is a leak in the line.", "There is a blockage in the line.", "There is a pressure drop in the line.", "There is a valve in the line."], "correct": 1, "explanation": "✅ 'Blockage' تعني انسداد." },
+        { "ar": "تحقق من منسوب السائل في الخزان.", "options": ["Check the liquid level in the tank.", "Check the pressure in the tank.", "Check the temperature in the tank.", "Check the liquid color in the tank."], "correct": 0, "explanation": "✅ 'Liquid level' هو منسوب السائل." },
+        { "ar": "الوحدة تعمل بكفاءة 95%.", "options": ["The unit is operating at 95% efficiency.", "The unit is operating at 95% capacity.", "The unit is operating at 50% efficiency.", "The unit is shutdown at 95%."], "correct": 0, "explanation": "✅ 'Efficiency' تعني كفاءة." },
+        { "ar": "التوربين يحتاج تزييت.", "options": ["The turbine needs lubrication.", "The turbine needs cleaning.", "The pump needs lubrication.", "The turbine needs replacement."], "correct": 0, "explanation": "✅ 'Lubrication' تعني تزييت." },
+        
+        // 31-40: المختبر والتحاليل
+        { "ar": "حلل العينة في المختبر.", "options": ["Analyze the sample in the lab.", "Take the sample to the lab.", "Analyze the sample in the field.", "Discard the sample in the lab."], "correct": 0, "explanation": "✅ 'Analyze' تعني حلل." },
+        { "ar": "نتيجة التحليل طبيعية.", "options": ["The test result is normal.", "The test result is abnormal.", "The sample is normal.", "The test result is ready."], "correct": 0, "explanation": "✅ 'Test result' هي نتيجة التحليل." },
+        { "ar": "نسبة الكبريت مرتفعة.", "options": ["The sulfur content is high.", "The sulfur content is low.", "The carbon content is high.", "The sulfur level is normal."], "correct": 0, "explanation": "✅ 'Sulfur content' هو محتوى الكبريت." },
+        { "ar": "خذ عينة كل ساعتين.", "options": ["Take a sample every two hours.", "Take a sample every two days.", "Take a reading every two hours.", "Take a sample every hour."], "correct": 0, "explanation": "✅ 'Every two hours' تعني كل ساعتين." },
+        { "ar": "هذا المنتج مطابق للمواصفات.", "options": ["This product meets the specifications.", "This product fails the specifications.", "This product needs testing.", "This product is off-spec."], "correct": 0, "explanation": "✅ 'Meets the specifications' تعني مطابق للمواصفات." },
+        { "ar": "رقم الأوكتان منخفض.", "options": ["The octane number is low.", "The octane number is high.", "The cetane number is low.", "The octane rating is normal."], "correct": 0, "explanation": "✅ 'Octane number' هو رقم الأوكتان." },
+        { "ar": "العينة ملوثة.", "options": ["The sample is contaminated.", "The sample is pure.", "The sample is ready.", "The sample is clean."], "correct": 0, "explanation": "✅ 'Contaminated' تعني ملوثة." },
+        { "ar": "قم بمعايرة الجهاز.", "options": ["Calibrate the instrument.", "Clean the instrument.", "Turn off the instrument.", "Calibrate the sample."], "correct": 0, "explanation": "✅ 'Calibrate' تعني عاير." },
+        { "ar": "درجة الغليان 150 درجة مئوية.", "options": ["The boiling point is 150°C.", "The melting point is 150°C.", "The flash point is 150°C.", "The freezing point is 150°C."], "correct": 0, "explanation": "✅ 'Boiling point' هي درجة الغليان." },
+        { "ar": "المنتج نقي.", "options": ["The product is pure.", "The product is contaminated.", "The product is ready.", "The product is mixed."], "correct": 0, "explanation": "✅ 'Pure' تعني نقي." },
+        
+        // 41-50: الصيانة والإصلاح
+        { "ar": "المضخة بحاجة إلى صيانة.", "options": ["The pump needs maintenance.", "The pump needs replacement.", "The valve needs maintenance.", "The pump is working fine."], "correct": 0, "explanation": "✅ 'Maintenance' هي الصيانة." },
+        { "ar": "الختم تالف.", "options": ["The seal is damaged.", "The seal is new.", "The gasket is damaged.", "The seal is working."], "correct": 0, "explanation": "✅ 'Damaged' تعني تالف." },
+        { "ar": "استبدل الفلتر.", "options": ["Replace the filter.", "Clean the filter.", "Remove the filter.", "Check the filter."], "correct": 0, "explanation": "✅ 'Replace' تعني استبدل." },
+        { "ar": "الفلتر مسدود.", "options": ["The filter is clogged.", "The filter is clean.", "The filter is new.", "The valve is clogged."], "correct": 0, "explanation": "✅ 'Clogged' تعني مسدود." },
+        { "ar": "أحكم ربط البراغي.", "options": ["Tighten the bolts.", "Loosen the bolts.", "Remove the bolts.", "Check the bolts."], "correct": 0, "explanation": "✅ 'Tighten' تعني أحكم ربط." },
+        { "ar": "الرمان بلي (المحمل) ساخن.", "options": ["The bearing is hot.", "The bearing is cold.", "The pump is hot.", "The motor is hot."], "correct": 0, "explanation": "✅ 'Bearing' هو الرمان بلي/المحمل." },
+        { "ar": "تحقق من عدم وجود اهتزاز.", "options": ["Check for vibration.", "Check for noise.", "Check for leaks.", "Check for heat."], "correct": 0, "explanation": "✅ 'Vibration' هو الاهتزاز." },
+        { "ar": "السيور مهترئة.", "options": ["The belts are worn out.", "The belts are new.", "The belts are tight.", "The belts are loose."], "correct": 0, "explanation": "✅ 'Worn out' تعني مهترئة." },
+        { "ar": "أضف زيت التشحيم.", "options": ["Add lubricating oil.", "Add water.", "Add fuel.", "Remove lubricating oil."], "correct": 0, "explanation": "✅ 'Lubricating oil' هو زيت التشحيم." },
+        { "ar": "الضغط منخفض جداً.", "options": ["The pressure is too low.", "The pressure is too high.", "The temperature is too low.", "The flow is too low."], "correct": 0, "explanation": "✅ 'Too low' تعني منخفض جداً." },
+        
+        // 51-60: أوامر وتواصل
+        { "ar": "كرر ما قلته.", "options": ["Repeat what you said.", "Stop what you said.", "Write what you said.", "Ignore what you said."], "correct": 0, "explanation": "✅ 'Repeat' تعني كرر." },
+        { "ar": "هل تفهم التعليمات؟", "options": ["Do you understand the instructions?", "Do you have the instructions?", "Did you write the instructions?", "Do you need instructions?"], "correct": 0, "explanation": "✅ 'Instructions' هي التعليمات." },
+        { "ar": "تحدث ببطء من فضلك.", "options": ["Speak slowly, please.", "Speak quickly, please.", "Stop speaking, please.", "Write slowly, please."], "correct": 0, "explanation": "✅ 'Slowly' تعني ببطء." },
+        { "ar": "أنا لم أفهم.", "options": ["I don't understand.", "I understand.", "I don't know.", "I don't care."], "correct": 0, "explanation": "✅ 'I don't understand' تعني أنا لم أفهم." },
+        { "ar": "هل يمكنك المساعدة؟", "options": ["Can you help?", "Can you leave?", "Can you work?", "Can you stop?"], "correct": 0, "explanation": "✅ 'Help' تعني مساعدة." },
+        { "ar": "أحتاج مفتاح ربط.", "options": ["I need a wrench.", "I need a hammer.", "I need a screwdriver.", "I need a plier."], "correct": 0, "explanation": "✅ 'Wrench' هو مفتاح الربط." },
+        { "ar": "أين صمام الأمان؟", "options": ["Where is the safety valve?", "Where is the control valve?", "Where is the isolation valve?", "Where is the relief valve?"], "correct": 0, "explanation": "✅ 'Safety valve' هو صمام الأمان." },
+        { "ar": "المولد لا يعمل.", "options": ["The generator is not working.", "The generator is working.", "The pump is not working.", "The motor is not working."], "correct": 0, "explanation": "✅ 'Generator' هو المولد." },
+        { "ar": "التيار الكهربائي انقطع.", "options": ["The power is off.", "The power is on.", "The water is off.", "The gas is off."], "correct": 0, "explanation": "✅ 'Power is off' التيار الكهربائي مقطوع." },
+        { "ar": "اتصل بالمشرف.", "options": ["Call the supervisor.", "Call the operator.", "Call the manager.", "Call the technician."], "correct": 0, "explanation": "✅ 'Supervisor' هو المشرف." },
+        
+        // 61-70: تقارير يومية
+        { "ar": "الإنتاج اليومي 5000 برميل.", "options": ["Daily production is 5000 barrels.", "Daily production is 5000 liters.", "Monthly production is 5000 barrels.", "Daily production is 5000 tons."], "correct": 0, "explanation": "✅ 'Daily production' هو الإنتاج اليومي." },
+        { "ar": "سجل درجة الحرارة كل ساعة.", "options": ["Record the temperature every hour.", "Record the pressure every hour.", "Record the temperature every day.", "Check the temperature every hour."], "correct": 0, "explanation": "✅ 'Every hour' تعني كل ساعة." },
+        { "ar": "لا توجد مشاكل.", "options": ["There are no problems.", "There are some problems.", "There is a problem.", "There are no workers."], "correct": 0, "explanation": "✅ 'No problems' لا توجد مشاكل." },
+        { "ar": "الوحدة تعمل بكامل طاقتها.", "options": ["The unit is operating at full capacity.", "The unit is operating at half capacity.", "The unit is shutdown.", "The unit is operating at low capacity."], "correct": 0, "explanation": "✅ 'Full capacity' هي الطاقة القصوى." },
+        { "ar": "نحتاج المزيد من المواد الخام.", "options": ["We need more raw materials.", "We need more products.", "We need more workers.", "We need more time."], "correct": 0, "explanation": "✅ 'Raw materials' هي المواد الخام." },
+        { "ar": "المخزون منخفض.", "options": ["The inventory is low.", "The inventory is high.", "The production is low.", "The quality is low."], "correct": 0, "explanation": "✅ 'Inventory' هو المخزون." },
+        { "ar": "تم تسليم الطلبية.", "options": ["The order has been delivered.", "The order has been received.", "The order has been cancelled.", "The order is ready."], "correct": 0, "explanation": "✅ 'Delivered' تعني تم التسليم." },
+        { "ar": "الشحنة جاهزة للتحميل.", "options": ["The shipment is ready for loading.", "The shipment is ready for unloading.", "The product is ready.", "The shipment is delayed."], "correct": 0, "explanation": "✅ 'Loading' هو التحميل." },
+        { "ar": "نحتاج ناقلة إضافية.", "options": ["We need an additional tanker.", "We need an additional pump.", "We need an additional worker.", "We need an additional valve."], "correct": 0, "explanation": "✅ 'Tanker' هي الناقلة." },
+        { "ar": "الصهريج ممتلئ.", "options": ["The tank is full.", "The tank is empty.", "The tank is half full.", "The tank is leaking."], "correct": 0, "explanation": "✅ 'Full' تعني ممتلئ." },
+        
+        // 71-80: حالات الطوارئ
+        { "ar": "حريق! اخلِ المبنى.", "options": ["Fire! Evacuate the building.", "Fire! Stay inside.", "Fire! Call the police.", "Fire! Ignore it."], "correct": 0, "explanation": "✅ 'Evacuate' تعني اخلِ." },
+        { "ar": "اتصل بالإسعاف.", "options": ["Call an ambulance.", "Call the police.", "Call the fire department.", "Call the supervisor."], "correct": 0, "explanation": "✅ 'Ambulance' هي سيارة الإسعاف." },
+        { "ar": "هناك شخص مصاب.", "options": ["There is an injured person.", "There is a worker.", "There is a visitor.", "There is a problem."], "correct": 0, "explanation": "✅ 'Injured' تعني مصاب." },
+        { "ar": "أحضر طفاية الحريق.", "options": ["Bring the fire extinguisher.", "Bring the water hose.", "Bring the first aid kit.", "Bring the tool box."], "correct": 0, "explanation": "✅ 'Fire extinguisher' هي طفاية الحريق." },
+        { "ar": "تم إخلاء المنطقة.", "options": ["The area has been evacuated.", "The area is safe.", "The area is closed.", "The area is open."], "correct": 0, "explanation": "✅ 'Evacuated' تعني تم الإخلاء." },
+        { "ar": "الوضع تحت السيطرة.", "options": ["The situation is under control.", "The situation is out of control.", "The situation is dangerous.", "The situation is normal."], "correct": 0, "explanation": "✅ 'Under control' تعني تحت السيطرة." },
+        { "ar": "أوقف جميع العمليات.", "options": ["Stop all operations.", "Start all operations.", "Continue all operations.", "Check all operations."], "correct": 0, "explanation": "✅ 'Stop all operations' أوقف جميع العمليات." },
+        { "ar": "نقطة التجمع في الجهة الشمالية.", "options": ["The muster point is on the north side.", "The muster point is on the south side.", "The exit is on the north side.", "The office is on the north side."], "correct": 0, "explanation": "✅ 'Muster point' هي نقطة التجمع." },
+        { "ar": "هذا تدريب فقط.", "options": ["This is only a drill.", "This is a real emergency.", "This is a test.", "This is a meeting."], "correct": 0, "explanation": "✅ 'Drill' تعني تدريب." },
+        { "ar": "عد العمال.", "options": ["Count the workers.", "Call the workers.", "Find the workers.", "Help the workers."], "correct": 0, "explanation": "✅ 'Count' تعني عد." },
+        
+        // 81-90: جودة المنتج
+        { "ar": "المنتج غير مطابق.", "options": ["The product is off-spec.", "The product is on-spec.", "The product is good.", "The product is ready."], "correct": 0, "explanation": "✅ 'Off-spec' تعني غير مطابق للمواصفات." },
+        { "ar": "نحتاج تحسين الجودة.", "options": ["We need to improve the quality.", "We need to reduce the quality.", "We need to check the quality.", "We need to maintain the quality."], "correct": 0, "explanation": "✅ 'Improve' تعني تحسين." },
+        { "ar": "اللون غير صحيح.", "options": ["The color is incorrect.", "The color is correct.", "The color is dark.", "The color is light."], "correct": 0, "explanation": "✅ 'Incorrect' تعني غير صحيح." },
+        { "ar": "الرائحة غريبة.", "options": ["The smell is strange.", "The smell is normal.", "The smell is good.", "The smell is bad."], "correct": 0, "explanation": "✅ 'Strange' تعني غريب." },
+        { "ar": "أعد التحليل.", "options": ["Redo the analysis.", "Stop the analysis.", "Start the analysis.", "Check the analysis."], "correct": 0, "explanation": "✅ 'Redo' تعني أعد." },
+        { "ar": "النتيجة دقيقة.", "options": ["The result is accurate.", "The result is inaccurate.", "The result is wrong.", "The result is ready."], "correct": 0, "explanation": "✅ 'Accurate' تعني دقيق." },
+        { "ar": "النقاء 99.9%.", "options": ["The purity is 99.9%.", "The impurity is 99.9%.", "The quality is 99.9%.", "The efficiency is 99.9%."], "correct": 0, "explanation": "✅ 'Purity' هو النقاء." },
+        { "ar": "العينة محفوظة في الثلاجة.", "options": ["The sample is stored in the refrigerator.", "The sample is stored in the oven.", "The sample is on the table.", "The sample is discarded."], "correct": 0, "explanation": "✅ 'Refrigerator' هي الثلاجة." },
+        { "ar": "حضر العينة للتحليل.", "options": ["Prepare the sample for analysis.", "Discard the sample.", "Take the sample.", "Label the sample."], "correct": 0, "explanation": "✅ 'Prepare' تعني حضر." },
+        { "ar": "اكتب التقرير النهائي.", "options": ["Write the final report.", "Read the final report.", "Submit the final report.", "Review the final report."], "correct": 0, "explanation": "✅ 'Final report' هو التقرير النهائي." },
+        
+        // 91-100: نهاية المناوبة
+        { "ar": "مناوبتي انتهت.", "options": ["My shift is over.", "My shift is starting.", "My shift is delayed.", "My shift is extended."], "correct": 0, "explanation": "✅ 'Shift' هي المناوبة." },
+        { "ar": "سأذهب للاستراحة.", "options": ["I'm going for a break.", "I'm going home.", "I'm going to work.", "I'm going to the meeting."], "correct": 0, "explanation": "✅ 'Break' هي الاستراحة." },
+        { "ar": "تسلم المناوبة.", "options": ["Take over the shift.", "End the shift.", "Start the shift.", "Miss the shift."], "correct": 0, "explanation": "✅ 'Take over' تعني تسلم." },
+        { "ar": "أرك غداً.", "options": ["See you tomorrow.", "See you later.", "See you next week.", "Goodbye."], "correct": 0, "explanation": "✅ 'See you tomorrow' هي أرك غداً." },
+        { "ar": "عمل جيد اليوم.", "options": ["Good job today.", "Bad job today.", "Hard work today.", "Easy work today."], "correct": 0, "explanation": "✅ 'Good job' عمل جيد." },
+        { "ar": "الاجتماع الساعة 8 صباحاً.", "options": ["The meeting is at 8 AM.", "The meeting is at 8 PM.", "The meeting is tomorrow.", "The meeting is cancelled."], "correct": 0, "explanation": "✅ 'Meeting' هو الاجتماع." },
+        { "ar": "لا تنس تسجيل الدخول.", "options": ["Don't forget to sign in.", "Don't forget to sign out.", "Don't forget to work.", "Don't forget to eat."], "correct": 0, "explanation": "✅ 'Sign in' تعني سجل الدخول." },
+        { "ar": "هاتفك مغلق.", "options": ["Your phone is off.", "Your phone is on.", "Your phone is ringing.", "Your phone is lost."], "correct": 0, "explanation": "✅ 'Off' تعني مغلق." },
+        { "ar": "شكراً لتعاونكم.", "options": ["Thank you for your cooperation.", "Thank you for your help.", "Thank you for your work.", "Thank you for coming."], "correct": 0, "explanation": "✅ 'Cooperation' هو التعاون." },
+        { "ar": "نلتقي غداً إن شاء الله.", "options": ["See you tomorrow, God willing.", "See you next week.", "See you later.", "Goodbye forever."], "correct": 0, "explanation": "✅ 'God willing' هي إن شاء الله." }
+    ];
+
+    // ====== متغيرات الحالة ======
+    let remainingQuestions = []; // الأسئلة المتبقية
+    let currentQuestion = null;
+    let score = 0;
+    let questionsAnswered = 0;
+    let correctIndex = 0;
+    let shuffledOptions = [];
+    let quizFinished = false;
+    const displayLetters = ["A", "B", "C", "D"];
+
+    // ====== خلط الخيارات ======
+    function shuffle(arr){
+        for(let i = arr.length - 1; i > 0; i--){
+            let j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+    }
+
+    // ====== تهيئة اللعبة ======
+  // ====== تهيئة اللعبة ======
+function initGame() {
+    // نسخ الأسئلة إلى المتبقية
+    remainingQuestions = [...questions];
+    
+    // 🔄 خلط الأسئلة في كل مرة
+    for(let i = remainingQuestions.length - 1; i > 0; i--){
+        let j = Math.floor(Math.random() * (i + 1));
+        [remainingQuestions[i], remainingQuestions[j]] = [remainingQuestions[j], remainingQuestions[i]];
+    }
+    
+    score = 0;
+    questionsAnswered = 0;
+    quizFinished = false;
+    loadNextQuestion();
+}
+
+    // ====== تحميل السؤال التالي ======
+    function loadNextQuestion() {
+        if (remainingQuestions.length === 0) {
+            showCompletionScreen();
+            return;
+        }
+
+        // أخذ أول سؤال من المتبقية
+        currentQuestion = remainingQuestions[0];
+        
+        // تحديث الإحصائيات
+        questionsAnswered++;
+        updateStats();
+        
+        // عرض السؤال
+        renderQuestion();
+    }
+
+    // ====== تحديث الإحصائيات ======
+    function updateStats() {
+        document.getElementById("score").textContent = `🏆 النقاط: ${score}`;
+        document.getElementById("question-counter").textContent = `السؤال ${questionsAnswered} / 100`;
+        
+        const progressPercent = (questionsAnswered / 100) * 100;
+        document.getElementById("progress-fill").style.width = `${progressPercent}%`;
+    }
+
+    // ====== عرض السؤال ======
+    function renderQuestion() {
+        const dynamicContent = document.getElementById("dynamic-content");
+        
+        // تجهيز الخيارات المخلوطة
+        shuffledOptions = currentQuestion.options.map((text, index) => ({
+            text: text,
+            originalIndex: index
+        }));
+        shuffle(shuffledOptions);
+        
+        // العثور على موقع الإجابة الصحيحة بعد الخلط
+        correctIndex = shuffledOptions.findIndex(opt => opt.originalIndex === currentQuestion.correct);
+
+        // بناء HTML
+        let html = `
+            <div id="question">${currentQuestion.ar}</div>
+            
+            <div class="options-grid" id="options">
+        `;
+        
+        shuffledOptions.forEach((opt, i) => {
+            html += `
+                <button class="option" onclick="checkAnswer(${i})" id="opt-${i}">
+                    <span class="option-letter">${displayLetters[i]}</span>
+                    ${opt.text}
+                </button>
+            `;
+        });
+        
+        html += `
+            </div>
+            
+            <div id="explanation"></div>
+            
+            <div class="next-btn-container">
+                <button id="next-btn" onclick="nextQuestion()">▶ السؤال التالي</button>
+            </div>
+        `;
+        
+        dynamicContent.innerHTML = html;
+        
+        // إخفاء زر التالي في البداية
+        document.getElementById("next-btn").style.display = "none";
+    }
+
+    // ====== فحص الإجابة ======
+    window.checkAnswer = function(selected) {
+        // منع الإجابة مرتين
+        const buttons = document.querySelectorAll(".option");
+        if (buttons[0].disabled) return;
+        
+        // تعطيل جميع الأزرار
+        buttons.forEach(b => b.disabled = true);
+        
+        // تلوين الإجابة الصحيحة
+        buttons[correctIndex].classList.add("correct");
+        
+        // التحقق من الإجابة
+        if (selected === correctIndex) {
+            score++;
+            document.getElementById("explanation").innerHTML = `✅ ${currentQuestion.explanation}`;
+        } else {
+            buttons[selected].classList.add("wrong");
+            document.getElementById("explanation").innerHTML = `❌ ${currentQuestion.explanation}`;
+        }
+        
+        // تحديث النتيجة
+        updateStats();
+        
+        // إظهار زر السؤال التالي
+        document.getElementById("next-btn").style.display = "inline-block";
+    }
+
+    // ====== السؤال التالي ======
+    window.nextQuestion = function() {
+        // إزالة السؤال الحالي من المتبقية
+        remainingQuestions = remainingQuestions.filter(q => q !== currentQuestion);
+        
+        if (remainingQuestions.length === 0) {
+            showCompletionScreen();
+        } else {
+            loadNextQuestion();
+        }
+    }
+
+    // ====== عرض شاشة الإكمال ======
+    function showCompletionScreen() {
+        quizFinished = true;
+        
+        const dynamicContent = document.getElementById("dynamic-content");
+        dynamicContent.innerHTML = `
+            <div class="completion-box">
+                <h2>🎉 مبروك! 🎉</h2>
+                <p>لقد أكملت جميع الأسئلة</p>
+                <div class="final-score">نتيجتك: ${score} من 100</div>
+                <p>${score >= 80 ? 'ممتاز! 👍' : score >= 60 ? 'جيد جداً 👏' : 'حاول مرة أخرى للتطوير 💪'}</p>
+                <button class="restart-btn" onclick="initGame()">🔄 ابدأ من جديد</button>
+            </div>
+        `;
+        
+        // تحديث شريط التقدم
+        document.getElementById("progress-fill").style.width = "100%";
+        document.getElementById("question-counter").textContent = `السؤال 100 / 100`;
+    }
+
+    // ====== بدء التشغيل ======
+    initGame();
+</script>
+
+</body>
+</html>
